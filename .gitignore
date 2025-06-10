@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# folders
+build/
+
+# IDE/Editor files (optional but recommended)
+.vscode/        # VS Code settings
