@@ -36,3 +36,6 @@ build/
 
 # IDE/Editor files (optional but recommended)
 .vscode/        # VS Code settings
+
+# json
+*.json
