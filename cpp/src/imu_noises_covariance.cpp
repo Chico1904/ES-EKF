@@ -24,7 +24,7 @@ Eigen::Matrix<double,3,12> imu_noises_covariance(float dt){
     Eigen::Matrix<double,3,3> I {};
     I << 1,0,0,0,1,0,0,0,1;
 
-    Eigen::Matrix<double,3,12> imu_cov(I.rows(), 4*I.cols());
+    Eigen::Matrix<double,3,12> imu_cov;
     imu_cov << pow(sigma_a,2)*I, pow(sigma_g,2)*I, pow(sigma_ba,2)*I, pow(sigma_bg,2)*I;
     //std::cout << "imu cov =" << imu_cov;
     return imu_cov;
