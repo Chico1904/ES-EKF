@@ -26,6 +26,7 @@ struct dataset
 struct pseudoLandmarks
 {
     Eigen::Matrix<double,3, -1> positions;
+    Eigen::Matrix<double,4, -1> orientations;
     std::vector<Eigen::MatrixXd> measurements; // Each measurement can be a dynamic matrix
 };
 
