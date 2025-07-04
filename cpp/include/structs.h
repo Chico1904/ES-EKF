@@ -1,7 +1,25 @@
 #ifndef _STRUCTS
 #define _STRUCTS
 #include <Eigen/Dense>
+#include <vector>
 #include <random>
+
+struct user_input
+{
+    float dt;
+    std::vector<double> pQ_variance;
+    std::vector<double> Q_variance;
+    std::vector<double> R_variance;
+    bool outliers;
+    float outliers_rate;
+};
+
+struct covM
+{
+    Eigen::Matrix<double,7,7> pQ;
+    Eigen::Matrix<double,7,7> Q;
+    Eigen::Matrix<double,3,12> R;
+};
 
 struct outSpecs
 {

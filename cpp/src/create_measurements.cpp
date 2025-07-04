@@ -1,10 +1,5 @@
-#include <Eigen/Dense>
-#include <armadillo>
-#include <math.h> 
-#include <vector>
-#include <iostream>
 #include "structs.h"
-#include "create_measurements.h"
+#include "pre_process.h"
 
 /**
 Takes specific ground-truth poses and adds noise. Measurements = displacement + noise, quaternions + noise
@@ -16,6 +11,7 @@ pseudoLandmarks create_measurements(const dataset &my_dataset, // pseudoLandmark
 
     Eigen::Matrix<double,-1, -1> positions {my_dataset.ground_truth(Eigen::seq(1,3), Eigen::all)}; // 
     Eigen::Matrix<double,-1, -1> orientations {my_dataset.ground_truth({7,4,5,6}, Eigen::all)}; // dataset is in qx,qy,qz,qw but we want qw first
+    std::cout << pseudo_Q;
     // positions.resize(3, my_dataset.n_timesteps);
     // orientations.resize(4, my_dataset.n_timesteps);
 
