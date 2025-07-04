@@ -1,4 +1,4 @@
-#include "parse_dataset.h"
+#include "pre_process.h"
 #include "structs.h"
 void pre_process(dataset &my_dataset){
     clock_t start = clock();
@@ -6,11 +6,11 @@ void pre_process(dataset &my_dataset){
     // parse ground truth
     std::string current_path = std::filesystem::current_path();
     std::string dataset_path = current_path + "/datasets/Dataset9_indoor/davis_groundtruth.txt";
-    Eigen::MatrixXd ground_truth = pre_process_gt(dataset_path, my_dataset, 8);
+    Eigen::MatrixXd ground_truth = gt::pre_process(dataset_path, my_dataset, 8);
 
     // parse IMU
     dataset_path = current_path + "/datasets/Dataset9_indoor/davis_imu.txt";
-    Eigen::MatrixXd imu_data = pre_process_imu(dataset_path, my_dataset, 7);
+    Eigen::MatrixXd imu_data = imu::pre_process(dataset_path, my_dataset, 7);
 
     // Assign to dataset structure
     my_dataset.ground_truth = ground_truth;
@@ -22,7 +22,9 @@ void pre_process(dataset &my_dataset){
 
 }
 
-Eigen::MatrixXd pre_process_gt(std::string dataset_path, dataset &my_dataset, const int num_col){
+namespace gt
+{
+    Eigen::MatrixXd pre_process(std::string dataset_path, dataset &my_dataset, const int num_col){
     
     // Get number of datapoints //TODO: improve this
     Eigen::MatrixXd matrix2parse {};
@@ -95,8 +97,11 @@ Eigen::MatrixXd pre_process_gt(std::string dataset_path, dataset &my_dataset, co
 
     return matrix2parse;
 }
+} 
 
-Eigen::MatrixXd pre_process_imu(std::string dataset_path, dataset &my_dataset, const int num_col){
+namespace imu 
+{
+    Eigen::MatrixXd pre_process(std::string dataset_path, dataset &my_dataset, const int num_col){
 
     Eigen::MatrixXd matrix2parse {};
     matrix2parse.resize(num_col, my_dataset.n_timesteps);
@@ -132,6 +137,8 @@ Eigen::MatrixXd pre_process_imu(std::string dataset_path, dataset &my_dataset, c
     parse_dataset.close();
     return matrix2parse;
 }
+}
+
 
 std::vector<std::string> split_row(std::string sen) {
   
