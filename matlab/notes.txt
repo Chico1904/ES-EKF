@@ -1,0 +1,62 @@
+// Test
+--------------------- Similar Projects
+https://github.com/solonso/UAV-State-Estimation
+
+--------------------- IMU
+https://stanford.edu/class/ee267/lectures/lecture10.pdf
+
+ -------------------- Remarks About Mode
+From the papers, we note the most common method is to use Lee Algebra when it comes to
+apply the EKF. That means the state, the covariance and most of the elements involved
+in the predic and update steps of the EKF will be computed differently.
+
+For that, we need to use different operations, which is facilitated by external libraries.
+However, these libraries are in C++:
+https://github.com/artivis/manif
+So, if we are to implement "Mode 2", we need to integrate this in our project.
+Just to clarify, the motion model and the measurement model will be different.
+We really need to use the papers for this
+
+For the Lee Algebra, there's this video
+https://www.youtube.com/watch?v=nHOcoIyJj2o&ab_channel=InstitutdeRob%C3%B2ticaiInform%C3%A0ticaIndustrial%2CCSIC-UPC
+And the papers on the folder Documents
+
+---------------------- Project Structure (each topic can be a file)
+ 1) Process the IMU and ground-truth data and convert them into matrices (or similar)
+
+ 2) Prediction
+    2.1) Initialization: initial covariance matrix (belief) and mean should be defined. For a global localization problem it might be harder
+    to reach a convergence. If this happens, we can change to a tracking problem and add the true initial pose ig
+    2.2) Implement Motion Model: consists of defining the state vector (pose, position+quaternion, position+quaternion+velocities, ...)
+    and the input (accelerations?) using odometry (IMU). Then, equations should come up, as well as the respective jacobian G
+    2.3) Implement process noise: should be a parameter we can change easily. Research about how to get a proper process noise covariance
+
+3) Measurement Model
+    3.1) Decide what to have as measurements: distance, distance and bearing, etc
+    3.2) Decide how many landmarks we have and where (pseudo-landmarks, they don't actually exist)
+    3.3) Define respective measurement equations and jacobian H
+    3.4) Come up with a proper measurement noise covariance R. As we don't have real landmarks, the measurements will be passed to the filter
+    using the ground truth data plus some noise (let it be P), which is unknow to the filter! So, we can define R able to withstand this noise
+    Besides, we could randomly add outliers to test robustness of the filter (or not, if things get too harsh)
+
+4) Data association
+    4.1) Before going with the update step but after getting the measurement, data association has to be made. We have basically to test each
+    landmark in terms of likelihood, ie, see how likely a specific measurement was taken wrt a specific landmark
+    4.2) For each landmark, compute likelihood using predicted measurement, H and innovation (measurement error).
+    4.3) Store this values and see highest likelihood. If it's higher than a predefined likelihood threshold, reject this measurement
+    4.4) Having associated the measurement to a landmark, we have the true innovation and jacobian H. These will be used in 5)
+5) Update
+    5.1) Compute Kalman Gain K using measurement noise covariance R and measurement model (from data association!)
+    5.2) Calculate post belief using K, H and prior belief
+    5.3) Calculate mean (new state) using measurement and estimated/predicted measurement (function h)
+    5.4) Do batch update: slower but better ()
+
+
+Notes/Problems:
+ -> Measurements from IMU and ground-truth measurements weren't taken at the same time. The time interval between consecutive measurements
+ is very small though, so we need to come up with a way to deal with this. We may as well need to remove some measurements (to improve 
+ computational time).
+ -> Professor suggested that we may need to incorporate velocities in the state vector. Intgrating twice (accelerations -> pose) will be
+ a big obstacle.
+ -> 
+*/
