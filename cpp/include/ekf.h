@@ -11,15 +11,20 @@ class EKF {
     float dt {};
     bool outliers {};
     float outliers_rate {};
-    dataset my_dataset {};        
-    pseudoLandmarks my_pseudolandmarks {};
-    covM my_cov {};
+    
+    covMatrices cov{};
+    dataset data {};        
+    pseudoLandmarks pseudolandmarks {};
+
+    predictions preds{};
 
     //  ----------------------- Constructor
     EKF(user_input my_input);
 
     // Methods
     void pre_filter_loop();
+
+    void initialize_state();
 
 };
 

@@ -14,7 +14,7 @@ struct user_input
     float outliers_rate;
 };
 
-struct covM
+struct covMatrices
 {
     Eigen::Matrix<double,7,7> pQ;
     Eigen::Matrix<double,7,7> Q;
@@ -46,6 +46,23 @@ struct pseudoLandmarks
     Eigen::Matrix<double,3, -1> positions;
     Eigen::Matrix<double,4, -1> orientations;
     std::vector<Eigen::MatrixXd> measurements; // Each measurement can be a dynamic matrix
+};
+
+/*
+muNom = [x,y,z,vx,vy,vz,qw,qx,qy,qx, axb, ayb, azb, wxb, wyb, wzb, gx, gy, gz]
+muErr = [dx,dy,dz,dvx,dvy,dvz, dthetax, dthetay, dthetaz, daxb, dayb, dazb, dwxb, dwyb, dwzb, dgx, dgy, dgz]
+muQuat -> store quaternion from muNom to avoid repeated Eigen::Quaternions instantiations
+*/
+struct predictions
+{
+    Eigen::Matrix<double,19,-1> muNomTotal;
+    Eigen::Vector<double,19> muNom;
+    Eigen::Vector<double,18> muErr;
+
+    Eigen::Quaterniond muQuat;
+
+    Eigen::Matrix<double,18,18> sigma;
+
 };
 
 struct normal_random_variable
