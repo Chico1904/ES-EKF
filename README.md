@@ -3,7 +3,7 @@
 ## Overview
 This repository contains the project under the EL2320 Applied Estimation course. It consists of Error State Kalman Filter applied to a drone dataset, provided by UZH [here](https://fpv.ifi.uzh.ch/). The dataset contains groundtruth and IMU data for several runs (indoor and outdoor). 
 
-This project was initially developed in Matlab and the C++ source code is under development. However, the final report, the used documentation and some results are available.
+This project was initially developed in Matlab and the C++ source code is being developed as a side project. The final report, the used documentation and some results are available in this repo.
 
 ## Methodology
 As the dataset only provides the ground truth and IMU data, pseudo-obstacles were introduced to supplement the dataset. In other words, Gaussian noise was added to the ground truth data and the displacement to "imaginary" landmarks was computed, yielding the measurement used in the filter. Consequently, the ES-EKF could be assessed by comparing the filter estimation to the ground truth. 
