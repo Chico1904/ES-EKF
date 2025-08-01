@@ -4,8 +4,8 @@
 /**
 Takes specific ground-truth poses and adds noise. Measurements = displacement + noise, quaternions + noise
 */
-pseudoLandmarks create_measurements(const dataset &my_dataset, // pseudoLandmarks
-                        const Eigen::Matrix<double,7,7> pseudo_Q, 
+pseudoLandmarks create_measurements(const dataset& my_dataset, // pseudoLandmarks
+                        const Eigen::Matrix<double,7,7>& pseudo_Q, 
                         const outSpecs outlier_specs, 
                         const int num_landmarks){
 

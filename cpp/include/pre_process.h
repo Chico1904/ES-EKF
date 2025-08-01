@@ -29,8 +29,8 @@ namespace imu
 Eigen::Matrix<double,3,12> imu_noises_covariance(float dt);
 
 // create_measurements.cpp
-pseudoLandmarks create_measurements(const dataset &my_dataset, // pseudoLandmarks
-                        const Eigen::Matrix<double,7,7> pseudo_Q, 
+pseudoLandmarks create_measurements(const dataset& my_dataset, // pseudoLandmarks
+                        const Eigen::Matrix<double,7,7>& pseudo_Q, 
                         const outSpecs outlier_specs, 
                         const int num_landmarks);
                         

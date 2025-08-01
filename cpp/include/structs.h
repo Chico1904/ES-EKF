@@ -53,7 +53,7 @@ muNom = [x,y,z,vx,vy,vz,qw,qx,qy,qx, axb, ayb, azb, wxb, wyb, wzb, gx, gy, gz]
 muErr = [dx,dy,dz,dvx,dvy,dvz, dthetax, dthetay, dthetaz, daxb, dayb, dazb, dwxb, dwyb, dwzb, dgx, dgy, dgz]
 muQuat -> store quaternion from muNom to avoid repeated Eigen::Quaternions instantiations
 */
-struct predictions
+struct state
 {
     Eigen::Matrix<double,19,-1> muNomTotal;
     Eigen::Vector<double,19> muNom;
