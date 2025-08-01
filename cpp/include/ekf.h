@@ -16,7 +16,7 @@ class EKF {
     dataset data {};        
     pseudoLandmarks pseudolandmarks {};
 
-    predictions preds{};
+    state preds{};
 
     //  ----------------------- Constructor
     EKF(user_input my_input);
@@ -25,6 +25,8 @@ class EKF {
     void pre_filter_loop();
 
     void initialize_state();
+
+    void filter_loop();
 
 };
 
