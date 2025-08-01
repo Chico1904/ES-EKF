@@ -4,12 +4,13 @@ void pre_process(dataset &my_dataset){
     clock_t start = clock();
 
     // parse ground truth
-    std::string current_path = std::filesystem::current_path();
-    std::string dataset_path = current_path + "/datasets/Dataset9_indoor/davis_groundtruth.txt";
+    const std::string current_path = std::filesystem::current_path();
+    std::cout << current_path;
+    std::string dataset_path = current_path + "/../.." + "/datasets/Dataset9_indoor/davis_groundtruth.txt";
     Eigen::MatrixXd ground_truth = gt::pre_process(dataset_path, my_dataset, 8);
 
     // parse IMU
-    dataset_path = current_path + "/datasets/Dataset9_indoor/davis_imu.txt";
+    dataset_path = current_path + "/../.." + "/datasets/Dataset9_indoor/davis_imu.txt";
     Eigen::MatrixXd imu_data = imu::pre_process(dataset_path, my_dataset, 7);
 
     // Assign to dataset structure
