@@ -1,11 +1,13 @@
 #include "structs.h"
 #include "pre_process.h"
+#include "utils.h"
 
 /**
 Takes specific ground-truth poses and adds noise. Measurements = displacement + noise, quaternions + noise
 */
+
 pseudoLandmarks create_measurements(const dataset& my_dataset, // pseudoLandmarks
-                        const Eigen::Matrix<double,7,7>& pseudo_Q, 
+                        Eigen::Matrix<double,7,7>& pseudo_Q, 
                         const outSpecs outlier_specs, 
                         const int num_landmarks){
 
@@ -28,12 +30,10 @@ pseudoLandmarks create_measurements(const dataset& my_dataset, // pseudoLandmark
     Eigen::MatrixXd z_t(pseudo_Q.rows(), num_landmarks); 
     z_t.resize(pseudo_Q.rows(), num_landmarks);
     std::vector<Eigen::MatrixXd> Z;
-    Eigen::Vector<double, 7> measurement;
+    Eigen::Vector<double, 7> measurement {};
 
-    // sample from normal distribution to create noise. from eigen to arma object (TODO: optimize this)
-    arma::vec mu = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-    arma::mat pseudo_Q_arma = matrixxd_to_armamat(pseudo_Q); 
-
+    // sample from normal distribution to create noise (noise from mean = 0)
+    const Eigen::Vector<double,7> mu = {}; // 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 
     // create and assign measurements (= true state + Gaussian noise)
     for (int i =0; i<my_dataset.n_timesteps; i++){
@@ -42,8 +42,8 @@ pseudoLandmarks create_measurements(const dataset& my_dataset, // pseudoLandmark
 
         for(int j = 0; j<num_landmarks;j++){
             Eigen::Vector3d displacement = landmarks.positions(Eigen::all,j)-drone_position;
-            arma::vec arma_noise = arma::mvnrnd(mu, pseudo_Q_arma);
-            Eigen::VectorXd noise = armamat_to_vectorxd(arma_noise);
+            Eigen::Vector<double,7> noise {sample_randn<Eigen::Vector<double,7>, Eigen::Matrix<double,7,7>>(mu, pseudo_Q)};
+            noise.resize(mu.size());       
             Eigen::Vector3d noisy_displacement = displacement + noise(Eigen::seq(0,2));
             Eigen::Vector4d noisy_quaternion = drone_orientation + noise(Eigen::seq(3,6));
             measurement << noisy_displacement, noisy_quaternion;
@@ -61,17 +61,4 @@ pseudoLandmarks create_measurements(const dataset& my_dataset, // pseudoLandmark
     return landmarks;
 }
 
-arma::mat matrixxd_to_armamat(Eigen::MatrixXd eigen_A) {
-    arma::mat arma_B = arma::mat(eigen_A.data(), eigen_A.rows(), eigen_A.cols(),
-                                 true,   
-                                 false); 
-    return arma_B;
-}
 
-Eigen::VectorXd armamat_to_vectorxd(const arma::vec& arma_vec) {
-    Eigen::VectorXd eigen_vec(arma_vec.n_rows);
-    for (size_t i = 0; i < arma_vec.n_rows; ++i) {
-        eigen_vec(i) = arma_vec(i);
-    }
-    return eigen_vec;
-}
