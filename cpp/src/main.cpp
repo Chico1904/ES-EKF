@@ -16,6 +16,9 @@ int main(){
     // Get ground_truth, IMU and create pseudo measurements
     ekf.pre_filter_loop();
 
+    // Initialize nominal and error states
+    ekf.initialize_state();
+
 
     return 0;
 

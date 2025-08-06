@@ -18,6 +18,7 @@ struct covMatrices
 {
     Eigen::Matrix<double,7,7> pQ;
     Eigen::Matrix<double,7,7> Q;
+    Eigen::Matrix<double,3,12> pR;
     Eigen::Matrix<double,3,12> R;
 };
 
