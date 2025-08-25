@@ -5,6 +5,9 @@
 #include <Eigen/Dense>
 #include "structs.h"
 
+/*
+Filter class declaration
+*/
 class EKF {       
   public:     
     //  ----------------------- Attributes      
@@ -29,5 +32,10 @@ class EKF {
     void filter_loop();
 
 };
+
+/*
+Non-member functions declaration
+*/
+void predict(const float dt, state& state, const Eigen::Vector<double, 7>& imu, Eigen::Matrix<double,3,12>& cov_R);
 
 #endif
